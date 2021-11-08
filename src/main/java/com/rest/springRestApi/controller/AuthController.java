@@ -21,7 +21,6 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody RegisterRequest registerRequest){
-        System.out.println(registerRequest.getEmail()+""+registerRequest.getUsername()+""+registerRequest.getPassword());
         authService.signup(registerRequest);
         return new ResponseEntity(HttpStatus.OK);
     }

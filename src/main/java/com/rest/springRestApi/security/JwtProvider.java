@@ -1,6 +1,7 @@
 package com.rest.springRestApi.security;
 
 import com.rest.springRestApi.exception.SpringBlogException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -31,6 +32,29 @@ public class JwtProvider {
                 .signWith(key)
                 .compact();
     }
+
+    public boolean validateToken(String jwt) {
+        Jwts.parser().setSigningKey(key).parseClaimsJws(jwt);
+        return true;
+    }
+
+    public String getUsernameFromJWT(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(key)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
+    }
+
+//    private PublicKey getPublickey() {
+//        try {
+//            return keyStore.getCertificate("springblog").getPublicKey();
+//        } catch (KeyStoreException e) {
+//            throw new SpringBlogException("Exception occured while retrieving public key from keystore");
+//        }
+//    }
+
 //    private PrivateKey getPrivateKey() {
 //        try {
 //            return (PrivateKey) keyStore.getKey("springblog", "secret".toCharArray());
@@ -38,4 +62,6 @@ public class JwtProvider {
 //            throw new SpringBlogException("Exception occured while retrieving public key from keystore");
 //        }
 //    }
+
+
 }
